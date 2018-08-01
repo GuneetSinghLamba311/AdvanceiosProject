@@ -135,18 +135,24 @@ class QuestionsPage: UIViewController {
             print("hello")
             print(answers)
             scores += 5
+        databaseReference.child("Accounts").queryOrdered(byChild: "uniqueId").queryEqual(toValue: deviceId).observeSingleEvent(of: .value, with: { (snapShot) in
+            if let Dict = snapShot.value as? [String:AnyObject]{
+                
+                for each in Dict{
+                    self.databaseReference.child("Accounts").child(each.key).updateChildValues(["scores":self.scores])
+                }
+            }
+        })
+            
         }
-        else {
-            print("bye")
-        }
-        
-    }
+}
     
     
     @IBAction func selectB(_ sender: Any) {
         if(answers[counter] == "B") {
             print("hello")
             scores += 5
+            
         }
         else {
             print("bye")
